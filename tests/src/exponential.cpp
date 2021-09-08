@@ -2,7 +2,7 @@
 #include <random>
 #include "aarand/aarand.hpp"
 
-TEST(UniformTest, Basic) {
+TEST(ExponentialTest, Basic) {
     std::mt19937_64 rng(42);
     size_t N = 1000000;
 
