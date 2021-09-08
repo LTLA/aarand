@@ -6,6 +6,7 @@
 namespace aarand {
 
 /**
+ * @tparam T Floating point type.
  * @tparam Engine A random number generator class with `operator()`, `min()` (static) and `max()` (static) methods.
  *
  * @param eng Instance of an RNG class like `std::mt19937_64`.
@@ -14,16 +15,17 @@ namespace aarand {
  */
 template<typename T = double, class Engine>
 T standard_uniform(Engine& eng) {
-    // Stolen from Boost.
-    constexpr double factor = 1.0 / static_cast<double>(Engine::max() - Engine::min());
+    // Stolen from Boost, see https://www.boost.org/doc/libs/1_67_0/boost/random/uniform_01.hpp
+    constexpr double factor = 1.0 / (static_cast<T>(Engine::max() - Engine::min()) + static_cast<T>(std::numeric_limits<Engine::result_type>::is_integer));
     double result;
     do {
-        result = static_cast<double>(eng() - Engine::min()) * factor;
+        result = static_cast<T>(eng() - Engine::min()) * factor;
     } while (result == 1.0);
     return result;
 }
 
 /**
+ * @tparam T Floating point type.
  * @tparam Engine A random number generator class with `operator()`, `min()` (static) and `max()` (static) methods.
  *
  * @param eng Instance of an RNG class like `std::mt19937_64`.
@@ -41,6 +43,7 @@ std::pair<T, T> standard_normal(Engine& eng) {
 }
 
 /**
+ * @tparam T Floating point type.
  * @tparam Engine A random number generator class with `operator()`, `min()` (static) and `max()` (static) methods.
  *
  * @param eng Instance of an RNG class like `std::mt19937_64`.
@@ -51,6 +54,8 @@ template<typename T = double, class Engine>
 T standard_exponential(Engine& eng) {
     return -std::log(standard_uniform(eng));
 }
+
+
 
 }
 
