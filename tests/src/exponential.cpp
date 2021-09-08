@@ -4,7 +4,7 @@
 
 TEST(ExponentialTest, Basic) {
     std::mt19937_64 rng(42);
-    size_t N = 1000000;
+    size_t N = 10000000;
 
     double average = 0, min = 1, max = 0;
     for (size_t i = 0; i < N; ++i) {
@@ -12,7 +12,6 @@ TEST(ExponentialTest, Basic) {
         average += val;
         min = std::min(min, val);
         max = std::max(max, val);
-        EXPECT_FALSE(max == 1);
     }
 
     average /= N;

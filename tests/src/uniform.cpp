@@ -12,7 +12,6 @@ TEST(UniformTest, Basic) {
         average += val;
         min = std::min(min, val);
         max = std::max(max, val);
-        EXPECT_FALSE(max == 1);
     }
 
     average /= N;
