@@ -53,5 +53,6 @@ Currently, only the bare bones are available:
 - Standard uniform distribution (`standard_uniform`)
 - Standard normal distribution (`standard_normal`)
 - Standard exponential distribution (`standard_exponential`)
+- Discrete uniform distribution (`discrete_uniform`)
 
 Contributions are welcome.

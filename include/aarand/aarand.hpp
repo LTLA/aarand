@@ -64,28 +64,49 @@ T standard_exponential(Engine& eng) {
     return -std::log(standard_uniform(eng));
 }
 
+/**
+ * @tparam T Integer type.
+ * @tparam Engine A random number generator class with `operator()`, `min()` (static) and `max()` (static) methods,
+ * where the `result_type` is an unsigned integer value.
+ *
+ * @param eng Instance of an RNG class like `std::mt19937_64`.
+ * @param bound Positive integer specifying the upper bound of the discrete distribution.
+ *
+ * @return Draw from a discrete uniform distribution in `[0, bound)`.
+ */
 template<typename T = int, class Engine>
-T discrete_uniform(Engine& eng, T max) {
+T discrete_uniform(Engine& eng, T bound) {
     typedef typename Engine::result_type R;
     static_assert(std::numeric_limits<R>::is_integer);
     static_assert(!std::numeric_limits<R>::is_signed);
 
     constexpr R range = Engine::max() - Engine::min();
-    static_assert(range >= std::numeric_limits<T>::max());
+    if (bound > range) {
+        throw std::runtime_error("'bound' should be less than the RNG range");
+    }
 
-    // Under the assertion above, it is impossible for max == Engine::max() +
-    // 1. So we don't have to deal with the crap about combining draws to get
-    // enough entropy, which is 90% of the Boost implementation.
-    const R limit = range - range % max;
+    static_assert(std::numeric_limits<T>::is_integer);
+    if (bound <= 0) {
+        throw std::runtime_error("'bound' should be a positive integer");
+    }
+
+    // The limit is necessary to provide uniformity in the presence of the
+    // modulus. The idea is to re-sample if we get a draw above the limit.
+    // Technically this can have problems as bound approaches range, in which
+    // case we might end up discarding a lot of the sample space... but this
+    // is unlikely to happen in practice, so whatever. Note that the +1 is
+    // necessary because range is inclusive but bound is not.
+    const R limit = range - (range % bound + 1);
+    
+    // In addition, we don't have to deal with the crap about combining draws
+    // to get enough entropy, which is 90% of the Boost implementation.
     T draw;
     do {
-        draw = (eng() - Engine::min()) % max;
+        draw = (eng() - Engine::min()) % bound;
     } while (draw > limit);
+
     return draw;
 }
-
-
-
 
 }
 
