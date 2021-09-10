@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include <limits>
+#include <stdexcept>
 
 namespace aarand {
 
