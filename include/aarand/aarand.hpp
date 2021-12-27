@@ -132,7 +132,7 @@ void sample(In values, size_t n, size_t s, Out output, Engine& eng) {
 
 template<class Out, class Engine>
 void sample(size_t n, size_t s, Out output, Engine& eng) {
-    for (size_t i = 0; i < n; ++i, ++values) {
+    for (size_t i = 0; i < n; ++i) {
         if (standard_uniform(eng) <= static_cast<double>(s)/(n - i)) {
             *output = i;
             ++output;
