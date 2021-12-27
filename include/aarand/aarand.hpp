@@ -109,6 +109,38 @@ T discrete_uniform(Engine& eng, T bound) {
     return draw;
 }
 
+template<class In, class Engine>
+void shuffle(In values, size_t n, Engine& eng) {
+    using std::swap;  
+    for (size_t i = 0; i < n; ++i) {
+        auto chosen = discrete_uniform(eng, n - i);
+        swap(*(values + i), *(values + chosen));
+    }
+    return;
+}
+
+template<class In, class Out, class Engine>
+void sample(In values, size_t n, size_t s, Out output, Engine& eng) {
+    for (size_t i = 0; i < n; ++i, ++values) {
+        if (standard_uniform(eng) <= static_cast<double>(s)/(n - i)) {
+            *output = *values;
+            ++output;
+            --s;
+        }
+    }
+}
+
+template<class Out, class Engine>
+void sample(size_t n, size_t s, Out output, Engine& eng) {
+    for (size_t i = 0; i < n; ++i, ++values) {
+        if (standard_uniform(eng) <= static_cast<double>(s)/(n - i)) {
+            *output = i;
+            ++output;
+            --s;
+        }
+    }
+}
+
 }
 
 #endif
