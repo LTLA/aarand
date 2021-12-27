@@ -71,8 +71,8 @@ $(function() {
 <h1>Overview</h1>
 <p >This library implements distribution functions to convert random numbers from C++11 (P)RNGs into samples of the relevant distribution. It provides implementations of some of the standard distribution functions in <code>&lt;random&gt;</code>, namely the uniform and normal distributions. Why is a separate library necessary? Because the standard functions are not guaranteed to give the same result across different library implementations - see <a href="https://stackoverflow.com/questions/24550963/stl-random-distributions-and-portability">discussion here</a> - and I don't want to drag Boost into my project dependencies.</p>
 <h1>Quick start</h1>
-<p >Just stick the <code><a class="el" href="aarand_8hpp.html" title="Collection of random distribution functions.">aarand.hpp</a></code> header file into your project somewhere.</p>
-<div class="fragment"><div class="line"><span class="preprocessor">#include &quot;<a class="code" href="aarand_8hpp.html">aarand.hpp</a>&quot;</span></div>
+<p >Usage is pretty simple - just plug in your favorite PRNG into desired distribution function:</p>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &quot;<a class="code" href="aarand_8hpp.html">aarand/aarand.hpp</a>&quot;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;random&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;iostream&gt;</span></div>
 <div class="line"> </div>
@@ -88,7 +88,9 @@ $(function() {
 <div class="ttc" id="aaarand_8hpp_html"><div class="ttname"><a href="aarand_8hpp.html">aarand.hpp</a></div><div class="ttdoc">Collection of random distribution functions.</div></div>
 <div class="ttc" id="aaarand_8hpp_html_a4e7dca20ad7b4cd391cf225276a5d562"><div class="ttname"><a href="aarand_8hpp.html#a4e7dca20ad7b4cd391cf225276a5d562">aarand::standard_normal</a></div><div class="ttdeci">std::pair&lt; T, T &gt; standard_normal(Engine &amp;eng)</div><div class="ttdef"><b>Definition:</b> aarand.hpp:58</div></div>
 <div class="ttc" id="aaarand_8hpp_html_aad381a939ef57d5759cbbccbb7073b46"><div class="ttname"><a href="aarand_8hpp.html#aad381a939ef57d5759cbbccbb7073b46">aarand::standard_uniform</a></div><div class="ttdeci">T standard_uniform(Engine &amp;eng)</div><div class="ttdef"><b>Definition:</b> aarand.hpp:26</div></div>
-</div><!-- fragment --><p >If you're using CMake, you can just use <code>FetchContent</code>. Note that this requires the header to be included from <code><a class="el" href="aarand_8hpp.html" title="Collection of random distribution functions.">aarand/aarand.hpp</a></code>.</p>
+</div><!-- fragment --><p >Check out the <a href="https://ltla.github.io/aarand">reference documentation</a> for more details.</p>
+<h1>Building projects</h1>
+<p >If you're using CMake, you can just use <code>FetchContent</code>.</p>
 <div class="fragment"><div class="line">include(FetchContent)</div>
 <div class="line"> </div>
 <div class="line">FetchContent_Declare(</div>
@@ -100,7 +102,8 @@ $(function() {
 <div class="line">FetchContent_MakeAvailable(aarand)</div>
 <div class="line"> </div>
 <div class="line">target_link_libraries(mylib aarand)</div>
-</div><!-- fragment --><h1>Available distributions</h1>
+</div><!-- fragment --><p >Otherwise, you can just stick the <code><a class="el" href="aarand_8hpp.html" title="Collection of random distribution functions.">aarand.hpp</a></code> header file into your project somewhere.</p>
+<h1>Available distributions</h1>
 <p >Currently, only the bare bones are available:</p>
 <ul>
 <li>Standard uniform distribution (<code>standard_uniform</code>)</li>
