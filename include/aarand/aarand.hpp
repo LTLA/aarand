@@ -18,13 +18,20 @@ namespace aarand {
  */
 template<typename T = double, class Engine>
 T standard_uniform(Engine& eng) {
-    static_assert(!std::numeric_limits<typename Engine::result_type>::is_signed);
-    static_assert(std::numeric_limits<typename Engine::result_type>::is_integer);
+    typedef typename Engine::result_type R;
+    static_assert(std::numeric_limits<R>::is_integer);
+
+    // Can't be bothered to figure out whether the range fits into 'R' for signed values.
+    // So instead, we just require unsigned integers, where the range will always fit.
+    static_assert(!std::numeric_limits<R>::is_signed); 
 
     // Stolen from Boost, see https://www.boost.org/doc/libs/1_67_0/boost/random/uniform_01.hpp
     // The +1 probably doesn't matter for 64-bit generators, but is helpful for engines with 
     // fewer output bits, to reduce the (small) probability of sampling 1's.
     constexpr double factor = 1.0 / (static_cast<T>(Engine::max() - Engine::min()) + 1.0);
+
+    // Note that it still might be possible to get a result = 1, depending on
+    // the numerical precision used to compute the product; hence the loop.
     double result;
     do {
         result = static_cast<T>(eng() - Engine::min()) * factor;
@@ -62,7 +69,11 @@ std::pair<T, T> standard_normal(Engine& eng) {
  */
 template<typename T = double, class Engine>
 T standard_exponential(Engine& eng) {
-    return -std::log(standard_uniform(eng));
+    T val;
+    do {
+        val = standard_uniform<T>(eng);
+    } while (val == 0);
+    return -std::log(val);
 }
 
 /**
@@ -79,7 +90,7 @@ template<typename T = int, class Engine>
 T discrete_uniform(Engine& eng, T bound) {
     typedef typename Engine::result_type R;
     static_assert(std::numeric_limits<R>::is_integer);
-    static_assert(!std::numeric_limits<R>::is_signed);
+    static_assert(!std::numeric_limits<R>::is_signed); // don't want to figure out how to store the range.
 
     constexpr R range = Engine::max() - Engine::min();
     if (bound > range) {
@@ -101,12 +112,12 @@ T discrete_uniform(Engine& eng, T bound) {
     
     // In addition, we don't have to deal with the crap about combining draws
     // to get enough entropy, which is 90% of the Boost implementation.
-    T draw;
+    R draw;
     do {
-        draw = (eng() - Engine::min()) % bound;
+        draw = eng() - Engine::min();
     } while (draw > limit);
 
-    return draw;
+    return draw % bound;
 }
 
 template<class In, class Engine>
