@@ -16,6 +16,7 @@ add_executable(
     src/normal.cpp
     src/exponential.cpp
     src/shuffle.cpp
+    src/sample.cpp
 )
 
 target_link_libraries(
