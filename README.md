@@ -1,5 +1,8 @@
 # Aaron's `random` C++ library
 
+![Unit tests](https://github.com/LTLA/aarand/actions/workflows/run-tests.yaml/badge.svg)
+![Documentation](https://github.com/LTLA/aarand/actions/workflows/doxygenate.yaml/badge.svg)
+
 ## Overview
 
 This library implements distribution functions to convert random numbers from C++11 (P)RNGs into samples of the relevant distribution.
@@ -11,10 +14,10 @@ and I don't want to drag Boost into my project dependencies.
 
 ## Quick start
 
-Just stick the `aarand.hpp` header file into your project somewhere.
+Usage is pretty simple - just plug in your favorite PRNG into desired distribution function:
 
 ```cpp
-#include "aarand.hpp"
+#include "aarand/aarand.hpp"
 #include <random>
 #include <iostream>
 
@@ -29,8 +32,11 @@ int main() {
 }
 ```
 
+Check out the [reference documentation](https://ltla.github.io/aarand) for more details.
+
+## Building projects
+
 If you're using CMake, you can just use `FetchContent`.
-Note that this requires the header to be included from `aarand/aarand.hpp`.
 
 ```
 include(FetchContent)
@@ -46,6 +52,8 @@ FetchContent_MakeAvailable(aarand)
 target_link_libraries(mylib aarand)
 ```
 
+Otherwise, you can just stick the `aarand.hpp` header file into your project somewhere.
+
 ## Available distributions
 
 Currently, only the bare bones are available:
@@ -54,5 +62,7 @@ Currently, only the bare bones are available:
 - Standard normal distribution (`standard_normal`)
 - Standard exponential distribution (`standard_exponential`)
 - Discrete uniform distribution (`discrete_uniform`)
+- Shuffling an input vector (`shuffle`)
+- Sampling from an input vector or from an integer bound (`sample`)
 
 Contributions are welcome.
