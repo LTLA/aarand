@@ -5,6 +5,12 @@
 #include <limits>
 #include <stdexcept>
 
+/**
+ * @file aarand.hpp
+ *
+ * @brief Collection of random distribution functions.
+ */
+
 namespace aarand {
 
 /**
@@ -120,20 +126,50 @@ T discrete_uniform(Engine& eng, T bound) {
     return draw % bound;
 }
 
+/**
+ * @tparam In Random-access iterator or pointer.
+ * @tparam Engine A random number generator class with `operator()`, `min()` (static) and `max()` (static) methods,
+ * where the `result_type` is an unsigned integer value.
+ *
+ * @param values Iterator or pointer to an array of values to shuffle.
+ * @param n Number of values in the array pointed to by `values`.
+ * @param eng Instance of an RNG class like `std::mt19937_64`.
+ *
+ * @return Contents of `values` are randomly permuted in place using the Fisher-Yates algorithm.
+ */
 template<class In, class Engine>
 void shuffle(In values, size_t n, Engine& eng) {
-    using std::swap;  
-    for (size_t i = 0; i < n; ++i) {
-        auto chosen = discrete_uniform(eng, n - i);
-        swap(*(values + i), *(values + chosen));
+    if (n) {
+        using std::swap;  
+        for (size_t i = 0; i < n - 1; ++i) {
+            auto chosen = discrete_uniform(eng, n - i);
+            swap(*(values + i), *(values + i + chosen));
+        }
     }
     return;
 }
 
+/**
+ * @tparam In Random-access iterator or pointer for the inputs.
+ * @tparam Out Random-access iterator or pointer for the outputs.
+ * @tparam Engine A random number generator class with `operator()`, `min()` (static) and `max()` (static) methods,
+ * where the `result_type` is an unsigned integer value.
+ *
+ * @param values Iterator or pointer to an array of values to sample from.
+ * @param n Number of values in the array pointed to by `values`.
+ * @param s Number of values to sample.
+ * @param output Iterator or pointer to an array of length `s`, to store the sampled values. 
+ * @param eng Instance of an RNG class like `std::mt19937_64`.
+ *
+ * @return `output` is filled with `s` sampled values from `values`.
+ *
+ * If `s > n`, `values` is copied into the first `n` elements of `output` and the remaining values of `output` are undefined.
+ */
 template<class In, class Out, class Engine>
 void sample(In values, size_t n, size_t s, Out output, Engine& eng) {
-    for (size_t i = 0; i < n; ++i, ++values) {
-        if (standard_uniform(eng) <= static_cast<double>(s)/(n - i)) {
+    for (size_t i = 0; i < n && s; ++i, ++values) {
+        const double threshold = static_cast<double>(s)/(n - i);
+        if (threshold >= 1 || standard_uniform(eng) <= threshold) {
             *output = *values;
             ++output;
             --s;
@@ -141,10 +177,26 @@ void sample(In values, size_t n, size_t s, Out output, Engine& eng) {
     }
 }
 
+/**
+ * @tparam Out Random-access iterator or pointer for the outputs.
+ * @tparam Engine A random number generator class with `operator()`, `min()` (static) and `max()` (static) methods,
+ * where the `result_type` is an unsigned integer value.
+ *
+ * @param bound Upper bound of the indices to sample from.
+ * @param s Number of values to sample.
+ * @param output Iterator or pointer to an array of length `s`, to store the sampled values. 
+ * @param eng Instance of an RNG class like `std::mt19937_64`.
+ *
+ * @return `output` is filled with `s` sampled values from the sequence of integers in `{0, 1, ..., bound - 1}`.
+ *
+ * If `s > bound`, the first `n` elements of `output` will contain the sequence of integers from `0` to `bound - 1`.
+ * The remaining values of `output` are undefined.
+ */
 template<class Out, class Engine>
-void sample(size_t n, size_t s, Out output, Engine& eng) {
-    for (size_t i = 0; i < n; ++i) {
-        if (standard_uniform(eng) <= static_cast<double>(s)/(n - i)) {
+void sample(size_t bound, size_t s, Out output, Engine& eng) {
+    for (size_t i = 0; i < bound && s; ++i) {
+        const double threshold = static_cast<double>(s)/(bound - i);
+        if (threshold >= 1 || standard_uniform(eng) <= threshold) {
             *output = i;
             ++output;
             --s;
