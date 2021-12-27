@@ -69,7 +69,11 @@ std::pair<T, T> standard_normal(Engine& eng) {
  */
 template<typename T = double, class Engine>
 T standard_exponential(Engine& eng) {
-    return -std::log(standard_uniform(eng));
+    T val;
+    do {
+        val = standard_uniform<T>(eng);
+    } while (val == 0);
+    return -std::log(val);
 }
 
 /**
