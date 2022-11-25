@@ -14,7 +14,8 @@
 namespace aarand {
 
 /**
- * @tparam T Floating point type.
+ * @tparam T Floating point type to return.
+ * This is also used for intermediate calculations, so it is usually safest to provide a type that is at least as precise as a `double`. 
  * @tparam Engine A random number generator class with `operator()`, `min()` (static) and `max()` (static) methods,
  * where the `result_type` is an unsigned integer value.
  *
@@ -25,28 +26,33 @@ namespace aarand {
 template<typename T = double, class Engine>
 T standard_uniform(Engine& eng) {
     typedef typename Engine::result_type R;
-    static_assert(std::numeric_limits<R>::is_integer);
+    static_assert(std::numeric_limits<R>::is_integer, "RNG engine must yield integer results");
 
     // Can't be bothered to figure out whether the range fits into 'R' for signed values.
     // So instead, we just require unsigned integers, where the range will always fit.
-    static_assert(!std::numeric_limits<R>::is_signed); 
+    static_assert(!std::numeric_limits<R>::is_signed, "RNG engine must yield unsigned integers"); 
+
+    // Make sure we get the right type to avoid inadvertent promotions.
+    constexpr T ONE_ = 1;
 
     // Stolen from Boost, see https://www.boost.org/doc/libs/1_67_0/boost/random/uniform_01.hpp
     // The +1 probably doesn't matter for 64-bit generators, but is helpful for engines with 
     // fewer output bits, to reduce the (small) probability of sampling 1's.
-    constexpr double factor = 1.0 / (static_cast<T>(Engine::max() - Engine::min()) + 1.0);
+    constexpr T factor = ONE_ / (static_cast<T>(Engine::max() - Engine::min()) + ONE_);
 
     // Note that it still might be possible to get a result = 1, depending on
     // the numerical precision used to compute the product; hence the loop.
-    double result;
+    T result;
     do {
         result = static_cast<T>(eng() - Engine::min()) * factor;
-    } while (result == 1.0);
+    } while (result == ONE_);
+
     return result;
 }
 
 /**
- * @tparam T Floating point type.
+ * @tparam T Floating point type to return.
+ * This is also used for intermediate calculations, so it is usually safest to provide a type that is at least as precise as a `double`. 
  * @tparam Engine A random number generator class with `operator()`, `min()` (static) and `max()` (static) methods,
  * where the `result_type` is an unsigned integer value.
  *
@@ -56,16 +62,18 @@ T standard_uniform(Engine& eng) {
  */
 template<typename T = double, class Engine>
 std::pair<T, T> standard_normal(Engine& eng) {
-    constexpr double pi = 3.14159265358979323846;
+    constexpr T PI_ = 3.14159265358979323846;
+    constexpr T TWO_ = 2;
 
     // Box-Muller gives us two random values at a time.
-    double constant = std::sqrt(-2 * std::log(standard_uniform<T>(eng)));
-    double angle = 2 * pi * standard_uniform<T>(eng);
+    T constant = std::sqrt(-TWO_ * std::log(standard_uniform<T>(eng)));
+    T angle = TWO_ * PI_ * standard_uniform<T>(eng);
     return std::make_pair(constant * std::sin(angle), constant * std::cos(angle));
 }
 
 /**
- * @tparam T Floating point type.
+ * @tparam T Floating point type to return.
+ * This is also used for intermediate calculations, so it is usually safest to provide a type that is at least as precise as a `double`. 
  * @tparam Engine A random number generator class with `operator()`, `min()` (static) and `max()` (static) methods,
  * where the `result_type` is an unsigned integer value.
  *
@@ -78,7 +86,7 @@ T standard_exponential(Engine& eng) {
     T val;
     do {
         val = standard_uniform<T>(eng);
-    } while (val == 0);
+    } while (val == static_cast<T>(0));
     return -std::log(val);
 }
 
@@ -114,7 +122,7 @@ T discrete_uniform(Engine& eng, T bound) {
     // case we might end up discarding a lot of the sample space... but this
     // is unlikely to happen in practice, so whatever. Note that the +1 is
     // necessary because range is inclusive but bound is not.
-    const R limit = range - (range % bound + 1);
+    const R limit = range - ((range % bound) + 1);
     
     // In addition, we don't have to deal with the crap about combining draws
     // to get enough entropy, which is 90% of the Boost implementation.
