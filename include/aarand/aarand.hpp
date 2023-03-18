@@ -116,20 +116,30 @@ T discrete_uniform(Engine& eng, T bound) {
         throw std::runtime_error("'bound' should be a positive integer");
     }
 
-    // The limit is necessary to provide uniformity in the presence of the
-    // modulus. The idea is to re-sample if we get a draw above the limit.
-    // Technically this can have problems as bound approaches range, in which
-    // case we might end up discarding a lot of the sample space... but this
-    // is unlikely to happen in practice, so whatever. Note that the +1 is
-    // necessary because range is inclusive but bound is not.
-    const R limit = range - ((range % bound) + 1);
-    
-    // In addition, we don't have to deal with the crap about combining draws
-    // to get enough entropy, which is 90% of the Boost implementation.
-    R draw;
-    do {
-        draw = eng() - Engine::min();
-    } while (draw > limit);
+    R draw = eng() - Engine::min();
+
+    // Conservative shortcut to avoid an extra modulo operation in computing
+    // 'limit' if 'draw' is below 'limit'. This is based on the observation
+    // that 'range - bound <= limit', so any condition that triggers the loop
+    // will also pass this check. Allows early return when 'range >> bound'.
+    if (draw > range - bound) {
+
+        // The limit is necessary to provide uniformity in the presence of the
+        // modulus. The idea is to re-sample if we get a draw above the limit.
+        // Technically this can have problems as bound approaches range, in which
+        // case we might end up discarding a lot of the sample space... but this
+        // is unlikely to happen in practice, and even if it does, it's a rejection
+        // rate that's guaranteed to be less than 50%, so whatever.
+        //
+        // Note that the +1 is necessary because range is inclusive but bound is not.
+        const R limit = range - ((range % bound) + 1);
+
+        // In addition, we don't have to deal with the crap about combining draws
+        // to get enough entropy, which is 90% of the Boost implementation.
+        while (draw > limit) {
+            draw = eng() - Engine::min();
+        }
+    }
 
     return draw % bound;
 }
