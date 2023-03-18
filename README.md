@@ -52,6 +52,21 @@ FetchContent_MakeAvailable(aarand)
 target_link_libraries(mylib aarand)
 ```
 
+Alternatively, you can use the library via `find_package()` if the library was installed before.
+
+```cmake
+find_package(ltla_aarand CONFIG REQUIRED)
+target_link_libraries(mylib PRIVATE ltla::aarand)
+```
+
+To install the library use:
+
+```sh
+mkdir build && cd build
+cmake .. -DAARAND_TESTS=OFF
+cmake --build . --target install
+```
+
 Otherwise, you can just stick the `aarand.hpp` header file into your project somewhere.
 
 ## Available distributions
