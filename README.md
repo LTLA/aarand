@@ -36,7 +36,7 @@ Check out the [reference documentation](https://ltla.github.io/aarand) for more 
 
 ## Building projects
 
-If you're using CMake, you can just use `FetchContent`.
+### CMake with `FetchContent`
 
 ```
 include(FetchContent)
@@ -52,7 +52,24 @@ FetchContent_MakeAvailable(aarand)
 target_link_libraries(mylib aarand)
 ```
 
-Otherwise, you can just stick the `aarand.hpp` header file into your project somewhere.
+### CMake with `find_package()`
+
+```cmake
+find_package(ltla_aarand CONFIG REQUIRED)
+target_link_libraries(mylib PRIVATE ltla::aarand)
+```
+
+To install the library use:
+
+```sh
+mkdir build && cd build
+cmake .. -DAARAND_TESTS=OFF
+cmake --build . --target install
+```
+
+### Manual
+
+Copy and paste the [`aarand.hpp`](include/aarand/aarand.hpp) header file into your project and `#include` it as appropriate. 
 
 ## Available distributions
 
