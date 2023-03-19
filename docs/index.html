@@ -95,7 +95,7 @@ $(function() {
 <div class="ttc" id="aaarand_8hpp_html"><div class="ttname"><a href="aarand_8hpp.html">aarand.hpp</a></div><div class="ttdoc">Collection of random distribution functions.</div></div>
 </div><!-- fragment --><p>Check out the <a href="https://ltla.github.io/aarand">reference documentation</a> for more details.</p>
 <h1>Building projects</h1>
-<p>If you're using CMake, you can just use <code>FetchContent</code>.</p>
+<h2>CMake with <code>FetchContent</code></h2>
 <div class="fragment"><div class="line">include(FetchContent)</div>
 <div class="line"> </div>
 <div class="line">FetchContent_Declare(</div>
@@ -107,7 +107,15 @@ $(function() {
 <div class="line">FetchContent_MakeAvailable(aarand)</div>
 <div class="line"> </div>
 <div class="line">target_link_libraries(mylib aarand)</div>
-</div><!-- fragment --><p>Otherwise, you can just stick the <code><a class="el" href="aarand_8hpp.html" title="Collection of random distribution functions.">aarand.hpp</a></code> header file into your project somewhere.</p>
+</div><!-- fragment --><h2>CMake with <code>find_package()</code></h2>
+<div class="fragment"><div class="line">find_package(ltla_aarand CONFIG REQUIRED)</div>
+<div class="line">target_link_libraries(mylib PRIVATE ltla::aarand)</div>
+</div><!-- fragment --><p>To install the library use:</p>
+<div class="fragment"><div class="line">mkdir build &amp;&amp; cd build</div>
+<div class="line">cmake .. -DAARAND_TESTS=OFF</div>
+<div class="line">cmake --build . --target install</div>
+</div><!-- fragment --><h2>Manual</h2>
+<p>Copy and paste the <a href="include/aarand/aarand.hpp"><code>aarand.hpp</code></a> header file into your project and <code>#include</code> it as appropriate.</p>
 <h1>Available distributions</h1>
 <p>Currently, only the bare bones are available:</p>
 <ul>
