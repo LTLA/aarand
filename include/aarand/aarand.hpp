@@ -12,6 +12,10 @@
  * @brief Collection of random distribution functions.
  */
 
+/**
+ * @namespace aarand
+ * @brief Namespace containing Aaron's random distribution functions.
+ */
 namespace aarand {
 
 /**
@@ -150,11 +154,10 @@ T discrete_uniform(Engine& eng, T bound) {
  * @tparam Engine A random number generator class with `operator()`, `min()` (static) and `max()` (static) methods,
  * where the `result_type` is an unsigned integer value.
  *
- * @param values Iterator or pointer to an array of values to shuffle.
+ * @param[in, out] values Iterator or pointer to an array of values to shuffle.
+ * On return, contents of `values` are randomly permuted in place using the Fisher-Yates algorithm.
  * @param n Number of values in the array pointed to by `values`.
  * @param eng Instance of an RNG class like `std::mt19937_64`.
- *
- * @return Contents of `values` are randomly permuted in place using the Fisher-Yates algorithm.
  */
 template<class In, class Engine>
 void shuffle(In values, size_t n, Engine& eng) {
@@ -174,15 +177,13 @@ void shuffle(In values, size_t n, Engine& eng) {
  * @tparam Engine A random number generator class with `operator()`, `min()` (static) and `max()` (static) methods,
  * where the `result_type` is an unsigned integer value.
  *
- * @param values Iterator or pointer to an array of values to sample from.
+ * @param[in] values Iterator or pointer to an array of values to sample from.
  * @param n Number of values in the array pointed to by `values`.
  * @param s Number of values to sample.
- * @param output Iterator or pointer to an array of length `s`, to store the sampled values. 
- * @param eng Instance of an RNG class like `std::mt19937_64`.
- *
- * @return `output` is filled with `s` sampled values from `values`.
- *
+ * @param[out] output Iterator or pointer to an array of length `s`, to store the sampled values. 
+ * On return, `output` is filled with `s` sampled values from `values`.
  * If `s > n`, `values` is copied into the first `n` elements of `output` and the remaining values of `output` are undefined.
+ * @param eng Instance of an RNG class like `std::mt19937_64`.
  */
 template<class In, class Out, class Engine>
 void sample(In values, size_t n, size_t s, Out output, Engine& eng) {
@@ -203,13 +204,11 @@ void sample(In values, size_t n, size_t s, Out output, Engine& eng) {
  *
  * @param bound Upper bound of the indices to sample from.
  * @param s Number of values to sample.
- * @param output Iterator or pointer to an array of length `s`, to store the sampled values. 
- * @param eng Instance of an RNG class like `std::mt19937_64`.
- *
- * @return `output` is filled with `s` sampled values from the sequence of integers in `{0, 1, ..., bound - 1}`.
- *
+ * @param[out] output Iterator or pointer to an array of length `s`, to store the sampled values. 
+ * `output` is filled with `s` sampled values from the sequence of integers in `{0, 1, ..., bound - 1}`.
  * If `s > bound`, the first `n` elements of `output` will contain the sequence of integers from `0` to `bound - 1`.
  * The remaining values of `output` are undefined.
+ * @param eng Instance of an RNG class like `std::mt19937_64`.
  */
 template<class Out, class Engine>
 void sample(size_t bound, size_t s, Out output, Engine& eng) {

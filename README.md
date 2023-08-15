@@ -1,4 +1,4 @@
-# Aaron's `random` C++ library
+# Aaron's random distributions in C++
 
 ![Unit tests](https://github.com/LTLA/aarand/actions/workflows/run-tests.yaml/badge.svg)
 ![Documentation](https://github.com/LTLA/aarand/actions/workflows/doxygenate.yaml/badge.svg)
