@@ -2,23 +2,26 @@ var indexSectionsWithContent =
 {
   0: "ads",
   1: "a",
-  2: "ds",
-  3: "a"
+  2: "a",
+  3: "ds",
+  4: "a"
 };
 
 var indexSectionNames =
 {
   0: "all",
-  1: "files",
-  2: "functions",
-  3: "pages"
+  1: "namespaces",
+  2: "files",
+  3: "functions",
+  4: "pages"
 };
 
 var indexSectionLabels =
 {
   0: "All",
-  1: "Files",
-  2: "Functions",
-  3: "Pages"
+  1: "Namespaces",
+  2: "Files",
+  3: "Functions",
+  4: "Pages"
 };
 

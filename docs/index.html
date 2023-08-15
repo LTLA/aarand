@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.7"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>aarand: Aaron&#39;s &lt;tt&gt;random&lt;/tt&gt; C++ library</title>
+<title>aarand: Aaron&#39;s random distributions in C++</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -71,7 +71,7 @@ $(function() {
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">Aaron's <code>random</code> C++ library </div></div>
+  <div class="headertitle"><div class="title">Aaron's random distributions in C++ </div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="md__2github_2workspace_2README"></a> <img src="https://github.com/LTLA/aarand/actions/workflows/run-tests.yaml/badge.svg" alt="Unit tests" style="pointer-events: none;" class="inline"/> <img src="https://github.com/LTLA/aarand/actions/workflows/doxygenate.yaml/badge.svg" alt="Documentation" style="pointer-events: none;" class="inline"/> <a href="https://codecov.io/gh/LTLA/aarand"><img src="https://codecov.io/gh/LTLA/aarand/branch/master/graph/badge.svg?token=6I3UBJLHSO" alt="codecov" style="pointer-events: none;" class="inline"/></a></p>
@@ -85,14 +85,16 @@ $(function() {
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">int</span> main() {</div>
 <div class="line">    std::mt19937_64 rng(42);</div>
-<div class="line">    <span class="keywordtype">double</span> val = aarand::standard_uniform(rng);</div>
+<div class="line">    <span class="keywordtype">double</span> val = <a class="code hl_function" href="namespaceaarand.html#aad381a939ef57d5759cbbccbb7073b46">aarand::standard_uniform</a>(rng);</div>
 <div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Uniform value is: &quot;</span> &lt;&lt; val &lt;&lt; std::endl;</div>
 <div class="line"> </div>
-<div class="line">    <span class="keyword">auto</span> paired = aarand::standard_normal(rng);</div>
+<div class="line">    <span class="keyword">auto</span> paired = <a class="code hl_function" href="namespaceaarand.html#a4e7dca20ad7b4cd391cf225276a5d562">aarand::standard_normal</a>(rng);</div>
 <div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Normal values are: &quot;</span> &lt;&lt; paired.first &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; paired.second &lt;&lt; std::endl;</div>
 <div class="line">    <span class="keywordflow">return</span> 0;</div>
 <div class="line">}</div>
 <div class="ttc" id="aaarand_8hpp_html"><div class="ttname"><a href="aarand_8hpp.html">aarand.hpp</a></div><div class="ttdoc">Collection of random distribution functions.</div></div>
+<div class="ttc" id="anamespaceaarand_html_a4e7dca20ad7b4cd391cf225276a5d562"><div class="ttname"><a href="namespaceaarand.html#a4e7dca20ad7b4cd391cf225276a5d562">aarand::standard_normal</a></div><div class="ttdeci">std::pair&lt; T, T &gt; standard_normal(Engine &amp;eng)</div><div class="ttdef"><b>Definition</b> aarand.hpp:69</div></div>
+<div class="ttc" id="anamespaceaarand_html_aad381a939ef57d5759cbbccbb7073b46"><div class="ttname"><a href="namespaceaarand.html#aad381a939ef57d5759cbbccbb7073b46">aarand::standard_uniform</a></div><div class="ttdeci">T standard_uniform(Engine &amp;eng)</div><div class="ttdef"><b>Definition</b> aarand.hpp:32</div></div>
 </div><!-- fragment --><p>Check out the <a href="https://ltla.github.io/aarand">reference documentation</a> for more details.</p>
 <h1>Building projects</h1>
 <h2>CMake with <code>FetchContent</code></h2>
