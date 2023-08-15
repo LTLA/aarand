@@ -4,6 +4,7 @@
 #include <cmath>
 #include <limits>
 #include <stdexcept>
+#include <type_traits>
 
 /**
  * @file aarand.hpp
@@ -102,20 +103,18 @@ T standard_exponential(Engine& eng) {
  */
 template<typename T = int, class Engine>
 T discrete_uniform(Engine& eng, T bound) {
-    typedef typename Engine::result_type R;
-    static_assert(std::numeric_limits<R>::is_integer);
-    static_assert(!std::numeric_limits<R>::is_signed); // don't want to figure out how to store the range.
-
-    constexpr R range = Engine::max() - Engine::min();
-    if constexpr(std::numeric_limits<T>::max() > std::numeric_limits<R>::max()) {
-        if (bound > static_cast<T>(range)) {
-            throw std::runtime_error("'bound' should be less than the RNG range");
-        }
-    }
-
     static_assert(std::numeric_limits<T>::is_integer);
     if (bound <= 0) {
         throw std::runtime_error("'bound' should be a positive integer");
+    }
+
+    typedef typename Engine::result_type R;
+    static_assert(std::numeric_limits<R>::is_integer);
+    static_assert(!std::numeric_limits<R>::is_signed); // don't want to figure out how to store the range if it might not fit into R.
+
+    constexpr R range = Engine::max() - Engine::min();
+    if (static_cast<typename std::make_unsigned<T>::type>(bound) > range) { // force an unsigned comparison.
+        throw std::runtime_error("'bound' should be less than the RNG range");
     }
 
     R draw = eng() - Engine::min();
