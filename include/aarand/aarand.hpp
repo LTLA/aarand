@@ -107,8 +107,10 @@ T discrete_uniform(Engine& eng, T bound) {
     static_assert(!std::numeric_limits<R>::is_signed); // don't want to figure out how to store the range.
 
     constexpr R range = Engine::max() - Engine::min();
-    if (bound > range) {
-        throw std::runtime_error("'bound' should be less than the RNG range");
+    if constexpr(std::numeric_limits<T>::max() > std::numeric_limits<R>::max()) {
+        if (bound > static_cast<T>(range)) {
+            throw std::runtime_error("'bound' should be less than the RNG range");
+        }
     }
 
     static_assert(std::numeric_limits<T>::is_integer);

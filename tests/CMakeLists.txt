@@ -29,5 +29,7 @@ target_link_libraries(
     aarand
 )
 
+target_compile_options(libtest PRIVATE -Wall -Werror -Wpedantic -Wextra)
+
 include(GoogleTest)
 gtest_discover_tests(libtest)

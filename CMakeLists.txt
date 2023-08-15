@@ -14,7 +14,7 @@ target_include_directories(aarand INTERFACE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/ltla_aarand>)
 
-target_compile_features(aarand INTERFACE cxx_std_11)
+target_compile_features(aarand INTERFACE cxx_std_17)
 
 # Tests
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)

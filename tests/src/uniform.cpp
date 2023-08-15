@@ -44,7 +44,7 @@ TEST_P(DiscreteUniformTest, Discrete) {
     EXPECT_TRUE(max == upper - 1); // should sample enough to hit the max.
 }
 
-INSTANTIATE_TEST_CASE_P(
+INSTANTIATE_TEST_SUITE_P(
     DiscreteUniform,
     DiscreteUniformTest,
     ::testing::Values(3, 7, 11, 123, 7531, 131313)
