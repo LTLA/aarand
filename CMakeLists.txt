@@ -5,15 +5,15 @@ project(aarand
     DESCRIPTION "Aaron's distribution functions"
     LANGUAGES CXX)
 
-include(GNUInstallDirs)
-
 # Library
 add_library(aarand INTERFACE)
 add_library(ltla::aarand ALIAS aarand)
 
+include(GNUInstallDirs)
 target_include_directories(aarand INTERFACE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/ltla>)
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/ltla_aarand>)
+
 target_compile_features(aarand INTERFACE cxx_std_11)
 
 # Tests
@@ -31,7 +31,7 @@ endif()
 
 # Install
 install(DIRECTORY include/
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/ltla)
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/ltla_aarand)
 
 install(TARGETS aarand
     EXPORT aarandTargets)

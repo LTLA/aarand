@@ -38,7 +38,7 @@ Check out the [reference documentation](https://ltla.github.io/aarand) for more 
 
 ### CMake with `FetchContent`
 
-```
+```cmake
 include(FetchContent)
 
 FetchContent_Declare(
@@ -54,17 +54,19 @@ target_link_libraries(mylib aarand)
 
 ### CMake with `find_package()`
 
-```cmake
-find_package(ltla_aarand CONFIG REQUIRED)
-target_link_libraries(mylib PRIVATE ltla::aarand)
-```
-
-To install the library use:
+To install the library, clone a suitable version of this repository and run:
 
 ```sh
 mkdir build && cd build
 cmake .. -DAARAND_TESTS=OFF
 cmake --build . --target install
+```
+
+Then we can just use `find_package()` as usual:
+
+```cmake
+find_package(ltla_aarand CONFIG REQUIRED)
+target_link_libraries(mylib PRIVATE ltla::aarand)
 ```
 
 ### Manual
