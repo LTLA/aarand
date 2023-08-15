@@ -2,6 +2,7 @@
 
 ![Unit tests](https://github.com/LTLA/aarand/actions/workflows/run-tests.yaml/badge.svg)
 ![Documentation](https://github.com/LTLA/aarand/actions/workflows/doxygenate.yaml/badge.svg)
+[![codecov](https://codecov.io/gh/LTLA/aarand/branch/master/graph/badge.svg?token=6I3UBJLHSO)](https://codecov.io/gh/LTLA/aarand)
 
 ## Overview
 
