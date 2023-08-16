@@ -37,6 +37,14 @@ install(TARGETS aarand
     EXPORT aarandTargets)
 
 install(EXPORT aarandTargets
-    FILE ltla_aarandConfig.cmake
+    FILE ltla_aarandTargets.cmake
     NAMESPACE ltla::
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/ltla_aarand)
+
+include(CMakePackageConfigHelpers)
+configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake/Config.cmake.in
+    "${CMAKE_CURRENT_BINARY_DIR}/ltla_aarandConfig.cmake"
+    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/ltla_aarand)
+
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/ltla_aarandConfig.cmake"
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/ltla_aarand)
