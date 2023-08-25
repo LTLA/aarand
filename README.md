@@ -39,16 +39,24 @@ Check out the [reference documentation](https://ltla.github.io/aarand) for more 
 
 ### CMake with `FetchContent`
 
+If you're already using CMake, you can add something like this to your `CMakeLists.txt`:
+
 ```cmake
 include(FetchContent)
 
 FetchContent_Declare(
   aarand
   GIT_REPOSITORY https://github.com/LTLA/aarand
-  GIT_TAG master
+  GIT_TAG master # or any version of interest
 )
 
 FetchContent_MakeAvailable(aarand)
+```
+
+And then:
+
+```cmake
+target_link_libraries(myexe aarand)
 
 target_link_libraries(mylib aarand)
 ```

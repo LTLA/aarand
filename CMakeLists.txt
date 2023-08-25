@@ -18,9 +18,9 @@ target_compile_features(aarand INTERFACE cxx_std_17)
 
 # Tests
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
-    option(AARAND_TESTS "" ON)
+    option(AARAND_TESTS "Build aarand's test suite." ON)
 else()
-    option(AARAND_TESTS "" OFF)
+    option(AARAND_TESTS "Build aarand's test suite." OFF)
 endif()
 if(AARAND_TESTS)
     include(CTest)
