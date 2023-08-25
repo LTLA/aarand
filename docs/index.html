@@ -98,15 +98,18 @@ $(function() {
 </div><!-- fragment --><p>Check out the <a href="https://ltla.github.io/aarand">reference documentation</a> for more details.</p>
 <h1>Building projects</h1>
 <h2>CMake with <code>FetchContent</code></h2>
+<p>If you're already using CMake, you can add something like this to your <code>CMakeLists.txt</code>:</p>
 <div class="fragment"><div class="line">include(FetchContent)</div>
 <div class="line"> </div>
 <div class="line">FetchContent_Declare(</div>
 <div class="line">  aarand</div>
 <div class="line">  GIT_REPOSITORY https://github.com/LTLA/aarand</div>
-<div class="line">  GIT_TAG master</div>
+<div class="line">  GIT_TAG master # or any version of interest</div>
 <div class="line">)</div>
 <div class="line"> </div>
 <div class="line">FetchContent_MakeAvailable(aarand)</div>
+</div><!-- fragment --><p>And then:</p>
+<div class="fragment"><div class="line">target_link_libraries(myexe aarand)</div>
 <div class="line"> </div>
 <div class="line">target_link_libraries(mylib aarand)</div>
 </div><!-- fragment --><h2>CMake with <code>find_package()</code></h2>
