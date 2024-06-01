@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.24)
 
 project(aarand
-    VERSION 1.0.1
+    VERSION 1.0.2
     DESCRIPTION "Aaron's random distribution functions"
     LANGUAGES CXX)
 
@@ -46,5 +46,10 @@ configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake/Config.cmake.in
     "${CMAKE_CURRENT_BINARY_DIR}/ltla_aarandConfig.cmake"
     INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/ltla_aarand)
 
+write_basic_package_version_file(
+    ${CMAKE_CURRENT_BINARY_DIR}/ltla_aarandConfigVersion.cmake
+    COMPATIBILITY SameMajorVersion)
+
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/ltla_aarandConfig.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/ltla_aarandConfigVersion.cmake"
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/ltla_aarand)
