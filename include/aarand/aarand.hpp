@@ -195,16 +195,21 @@ void sample(In values, size_t n, size_t s, Out output, Engine& eng) {
     }
 
     for (size_t i = 0; i < n; ++i, ++values) {
-        const double threshold = static_cast<double>(s)/(n - i);
-        if (threshold >= 1 || standard_uniform(eng) <= threshold) {
+        size_t leftovers = n - i;
+        const double threshold = static_cast<double>(s)/leftovers;
+        if (standard_uniform(eng) <= threshold) {
             *output = *values;
             ++output;
-            --s;
 
+            --s;
             if (s == 0) {
                 return;
-            } else if (s >= n) {
-                std::copy_n(values, n, output);
+            }
+
+            --leftovers;
+            if (s == leftovers) {
+                ++values;
+                std::copy_n(values, leftovers, output);
                 return;
             }
         }
@@ -236,15 +241,18 @@ void sample(size_t bound, size_t s, Out output, Engine& eng) {
     for (size_t i = 0; i < bound; ++i) {
         size_t leftovers = bound - i;
         const double threshold = static_cast<double>(s)/leftovers;
-        if (threshold >= 1 || standard_uniform(eng) <= threshold) {
+        if (standard_uniform(eng) <= threshold) {
             *output = i;
             ++output;
-            --s;
 
+            --s;
             if (s == 0) {
                 return;
-            } else if (s >= n) {
-                std::iota(output, output + leftovers - 1, i + 1);
+            }
+            
+            --leftovers;
+            if (s == leftovers) {
+                std::iota(output, output + leftovers, i + 1);
                 return;
             }
         }
