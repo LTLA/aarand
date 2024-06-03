@@ -187,12 +187,26 @@ void shuffle(In values, size_t n, Engine& eng) {
  */
 template<class In, class Out, class Engine>
 void sample(In values, size_t n, size_t s, Out output, Engine& eng) {
-    for (size_t i = 0; i < n && s; ++i, ++values) {
+    if (s == 0) {
+        return;
+    } else if (s >= n) {
+        std::copy_n(values, n, output);
+        return;
+    }
+
+    for (size_t i = 0; i < n; ++i, ++values) {
         const double threshold = static_cast<double>(s)/(n - i);
         if (threshold >= 1 || standard_uniform(eng) <= threshold) {
             *output = *values;
             ++output;
             --s;
+
+            if (s == 0) {
+                return;
+            } else if (s >= n) {
+                std::copy_n(values, n, output);
+                return;
+            }
         }
     }
 }
@@ -212,12 +226,27 @@ void sample(In values, size_t n, size_t s, Out output, Engine& eng) {
  */
 template<class Out, class Engine>
 void sample(size_t bound, size_t s, Out output, Engine& eng) {
-    for (size_t i = 0; i < bound && s; ++i) {
-        const double threshold = static_cast<double>(s)/(bound - i);
+    if (s == 0) {
+        return;
+    } else if (s >= n) {
+        std::iota(output, output + n, 0);
+        return;
+    }
+
+    for (size_t i = 0; i < bound; ++i) {
+        size_t leftovers = bound - i;
+        const double threshold = static_cast<double>(s)/leftovers;
         if (threshold >= 1 || standard_uniform(eng) <= threshold) {
             *output = i;
             ++output;
             --s;
+
+            if (s == 0) {
+                return;
+            } else if (s >= n) {
+                std::iota(output, output + leftovers - 1, i + 1);
+                return;
+            }
         }
     }
 }
