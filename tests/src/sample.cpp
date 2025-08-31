@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include <random>
+#include <cstddef>
 #include "aarand/aarand.hpp"
 
 class SampleTest : public ::testing::TestWithParam<int> {};
@@ -61,19 +62,19 @@ INSTANTIATE_TEST_SUITE_P(
 );
 
 TEST(SampleTest, Extremes) {
-    size_t n = 9;
+    std::size_t n = 9;
     std::vector<int> blah(n);
     std::iota(blah.begin(), blah.end(), 0);
     
     std::mt19937_64 rng(999);
     std::vector<int> output(100);
 
-    aarand::sample(blah.begin(), blah.size(), 100, output.begin(), rng);
+    aarand::sample(blah.begin(), blah.size(), static_cast<std::size_t>(100), output.begin(), rng);
     EXPECT_EQ(blah, std::vector<int>(output.begin(), output.begin() + n));
     EXPECT_EQ(output[n], 0);
 
     std::fill(output.begin(), output.end(), 0);
-    aarand::sample(n, 100, output.begin(), rng);
+    aarand::sample(n, static_cast<std::size_t>(100), output.begin(), rng);
     EXPECT_EQ(blah, std::vector<int>(output.begin(), output.begin() + n));    
     EXPECT_EQ(output[n], 0);
 }
