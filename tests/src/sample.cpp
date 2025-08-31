@@ -61,7 +61,7 @@ INSTANTIATE_TEST_SUITE_P(
     ::testing::Values(1, 2, 4, 7, 9)
 );
 
-TEST(SampleTest, Extremes) {
+TEST(SampleTest, TooMany) {
     std::size_t n = 9;
     std::vector<int> blah(n);
     std::iota(blah.begin(), blah.end(), 0);
@@ -77,4 +77,18 @@ TEST(SampleTest, Extremes) {
     aarand::sample(n, static_cast<std::size_t>(100), output.begin(), rng);
     EXPECT_EQ(blah, std::vector<int>(output.begin(), output.begin() + n));    
     EXPECT_EQ(output[n], 0);
+}
+
+TEST(SampleTest, Zero) {
+    std::size_t n = 9;
+    std::vector<int> blah(n);
+    std::iota(blah.begin(), blah.end(), 0);
+
+    std::mt19937_64 rng(999);
+    std::vector<int> output(1, 999);
+    aarand::sample(blah.begin(), blah.size(), static_cast<std::size_t>(0), output.begin(), rng);
+    EXPECT_EQ(output[0], 999); // untouched.
+
+    aarand::sample(n, static_cast<std::size_t>(0), output.begin(), rng);
+    EXPECT_EQ(output[0], 999); // untouched.
 }

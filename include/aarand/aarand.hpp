@@ -4,6 +4,8 @@
 #include <cmath>
 #include <limits>
 #include <stdexcept>
+#include <algorithm>
+#include <numeric>
 #include <type_traits>
 
 /**
@@ -186,13 +188,29 @@ void shuffle(const InputIterator_ values, const Length_ n, Engine& eng) {
  * @param eng Instance of an RNG class like `std::mt19937_64`.
  */
 template<class InputIterator_, typename Length_, class OutputIterator_, class Engine_>
-void sample(InputIterator_ values, const Length_ n, Length_ s, OutputIterator_ output, Engine_& eng) {
-    for (Length_ i = 0; i < n && s; ++i, ++values) {
-        const double threshold = static_cast<double>(s)/(n - i);
-        if (threshold >= 1 || standard_uniform(eng) <= threshold) {
+void sample(InputIterator_ values, const Length_ n, const Length_ s, OutputIterator_ output, Engine_& eng) {
+    if (!s) {
+        return;
+    }
+
+    auto remaining = s;
+    for (Length_ i = 0; i < n; ++i, ++values) {
+        const Length_ denom = n - i;
+        const double threshold = static_cast<double>(remaining) / denom;
+        if (threshold >= 1) {
+            // Once remaining >= denom, all remaining values must be selected.
+            // Both values will drop at the same rate so threshold will always be >= 1 in subsequent loops.
+            std::copy_n(values, denom, output);
+            return;
+        }
+
+        if (standard_uniform(eng) <= threshold) {
             *output = *values;
             ++output;
-            --s;
+            --remaining;
+            if (!remaining) {
+                return;
+            }
         }
     }
 }
@@ -207,18 +225,34 @@ void sample(InputIterator_ values, const Length_ n, Length_ s, OutputIterator_ o
  * @param s Number of values to sample.
  * @param[out] output Iterator or pointer to an array of length `s`, to store the sampled values. 
  * `output` is filled with `s` sampled values from the sequence of integers in `{0, 1, ..., bound - 1}`.
- * If `s > bound`, the first `n` elements of `output` will contain the sequence of integers from `0` to `bound - 1`.
+ * If `s > bound`, the first `bound` elements of `output` will contain the sequence of integers from `0` to `bound - 1`.
  * The remaining values of `output` are undefined.
  * @param eng Instance of an RNG class like `std::mt19937_64`.
  */
 template<typename Length_, class OutputIterator_, class Engine_>
-void sample(const Length_ bound, Length_ s, OutputIterator_ output, Engine_& eng) {
-    for (Length_ i = 0; i < bound && s; ++i) {
-        const double threshold = static_cast<double>(s)/(bound - i);
-        if (threshold >= 1 || standard_uniform(eng) <= threshold) {
+void sample(const Length_ bound, const Length_ s, OutputIterator_ output, Engine_& eng) {
+    if (!s) {
+        return;
+    }
+
+    auto remaining = s;
+    for (Length_ i = 0; i < bound; ++i) {
+        const Length_ denom = bound - i;
+        const double threshold = static_cast<double>(remaining) / denom;
+        if (threshold >= 1) {
+            // Once remaining >= denom, all remaining indices must be selected.
+            // Both values will drop at the same rate so threshold will always be >= 1 in subsequent loops.
+            std::iota(output, output + denom, i);
+            return;
+        }
+
+        if (standard_uniform(eng) <= threshold) {
             *output = i;
             ++output;
-            --s;
+            --remaining;
+            if (!remaining) {
+                return;
+            }
         }
     }
 }
