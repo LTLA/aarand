@@ -85,8 +85,8 @@ std::pair<Output_, Output_> standard_normal(Engine_& eng) {
  *
  * @return Draw from a standard exponential distribution.
  */
-template<typename Output_ = double, class Engine>
-Output_ standard_exponential(Engine& eng) {
+template<typename Output_ = double, class Engine_>
+Output_ standard_exponential(Engine_& eng) {
     Output_ val;
     do {
         val = standard_uniform<Output_>(eng);
@@ -159,24 +159,28 @@ Output_ discrete_uniform(Engine_& eng, const Output_ bound) {
  * @param n Number of values in the array pointed to by `values`.
  * @param eng Instance of an RNG class like `std::mt19937_64`.
  */
-template<class InputIterator_, typename Length_, class Engine>
-void shuffle(const InputIterator_ values, const Length_ n, Engine& eng) {
-    if (n) {
-        using std::swap;
-        for (Length_ i = 0; i < n - 1; ++i) {
+template<class InputIterator_, typename Length_, class Engine_>
+void shuffle(const InputIterator_ values, const Length_ n, Engine_& eng) {
+    if (n <= 1) {
+        return;
+    }
+
+    const Length_ last = n - 1;
+    for (Length_ i = 0; i < last; ++i) {
+        const auto chosen = discrete_uniform(eng, n - i);
+        if (chosen) {
             const auto current = values + i;
-            const auto chosen = discrete_uniform(eng, n - i);
+            using std::swap;
             swap(*current, *(current + chosen));
         }
     }
-    return;
 }
 
 /**
  * @tparam InputIterator_ Forward iterator or pointer for the inputs.
  * @tparam Length_ Integer type of the number of elements.
  * @tparam OutputIterator_ Forward iterator or pointer for the outputs.
- * @tparam Engine A random number generator class with `operator()`, `min()` (static) and `max()` (static) methods,
+ * @tparam Engine_ A random number generator class with `operator()`, `min()` (static) and `max()` (static) methods,
  * where the `result_type` is an unsigned integer value.
  *
  * @param[in] values Iterator or pointer to an array of values to sample from.

@@ -25,4 +25,11 @@ TEST(ShuffleTest, Basic) {
             EXPECT_TRUE(std::abs(expected - freq)/expected < 0.05); 
         }
     }
+
+    // Shuffling an array of length 1 has no effect.
+    blah.resize(1);
+    blah[0] = 99;
+    std::mt19937_64 rng;
+    aarand::shuffle(blah.begin(), 1, rng);
+    EXPECT_EQ(blah[0], 99);
 }
