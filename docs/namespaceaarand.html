@@ -103,15 +103,15 @@ Functions</h2></td></tr>
 <tr class="memitem:a8008eebc322824e6edaa308814e4d889" id="r_a8008eebc322824e6edaa308814e4d889"><td class="memTemplParams" colspan="2">template&lt;typename Output_  = double, class Engine_ &gt; </td></tr>
 <tr class="memitem:a8008eebc322824e6edaa308814e4d889"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; Output_, Output_ &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a8008eebc322824e6edaa308814e4d889">standard_normal</a> (Engine_ &amp;eng)</td></tr>
 <tr class="separator:a8008eebc322824e6edaa308814e4d889"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3cf87e0bca25edd84c43d53ed2b01363" id="r_a3cf87e0bca25edd84c43d53ed2b01363"><td class="memTemplParams" colspan="2">template&lt;typename Output_  = double, class Engine &gt; </td></tr>
-<tr class="memitem:a3cf87e0bca25edd84c43d53ed2b01363"><td class="memTemplItemLeft" align="right" valign="top">Output_&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a3cf87e0bca25edd84c43d53ed2b01363">standard_exponential</a> (Engine &amp;eng)</td></tr>
-<tr class="separator:a3cf87e0bca25edd84c43d53ed2b01363"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4684e9505d8302a4cb07e5247f97898" id="r_ab4684e9505d8302a4cb07e5247f97898"><td class="memTemplParams" colspan="2">template&lt;typename Output_  = double, class Engine_ &gt; </td></tr>
+<tr class="memitem:ab4684e9505d8302a4cb07e5247f97898"><td class="memTemplItemLeft" align="right" valign="top">Output_&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ab4684e9505d8302a4cb07e5247f97898">standard_exponential</a> (Engine_ &amp;eng)</td></tr>
+<tr class="separator:ab4684e9505d8302a4cb07e5247f97898"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab90593916ef696067d706328dcbf5bb6" id="r_ab90593916ef696067d706328dcbf5bb6"><td class="memTemplParams" colspan="2">template&lt;typename Output_  = int, class Engine_ &gt; </td></tr>
 <tr class="memitem:ab90593916ef696067d706328dcbf5bb6"><td class="memTemplItemLeft" align="right" valign="top">Output_&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ab90593916ef696067d706328dcbf5bb6">discrete_uniform</a> (Engine_ &amp;eng, const Output_ bound)</td></tr>
 <tr class="separator:ab90593916ef696067d706328dcbf5bb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae5ed7407c9fb663af00728c3c8cc3dac" id="r_ae5ed7407c9fb663af00728c3c8cc3dac"><td class="memTemplParams" colspan="2">template&lt;class InputIterator_ , typename Length_ , class Engine &gt; </td></tr>
-<tr class="memitem:ae5ed7407c9fb663af00728c3c8cc3dac"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ae5ed7407c9fb663af00728c3c8cc3dac">shuffle</a> (const InputIterator_ values, const Length_ n, Engine &amp;eng)</td></tr>
-<tr class="separator:ae5ed7407c9fb663af00728c3c8cc3dac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2290a64214ae74d1f6b6b40ca6c22387" id="r_a2290a64214ae74d1f6b6b40ca6c22387"><td class="memTemplParams" colspan="2">template&lt;class InputIterator_ , typename Length_ , class Engine_ &gt; </td></tr>
+<tr class="memitem:a2290a64214ae74d1f6b6b40ca6c22387"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a2290a64214ae74d1f6b6b40ca6c22387">shuffle</a> (const InputIterator_ values, const Length_ n, Engine_ &amp;eng)</td></tr>
+<tr class="separator:a2290a64214ae74d1f6b6b40ca6c22387"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a114562d198af107fac3a968da5a44862" id="r_a114562d198af107fac3a968da5a44862"><td class="memTemplParams" colspan="2">template&lt;class InputIterator_ , typename Length_ , class OutputIterator_ , class Engine_ &gt; </td></tr>
 <tr class="memitem:a114562d198af107fac3a968da5a44862"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a114562d198af107fac3a968da5a44862">sample</a> (InputIterator_ values, const Length_ n, const Length_ s, OutputIterator_ output, Engine_ &amp;eng)</td></tr>
 <tr class="separator:a114562d198af107fac3a968da5a44862"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -250,7 +250,7 @@ template&lt;class InputIterator_ , typename Length_ , class OutputIterator_ , cl
     <tr><td class="paramname">InputIterator_</td><td>Forward iterator or pointer for the inputs. </td></tr>
     <tr><td class="paramname">Length_</td><td>Integer type of the number of elements. </td></tr>
     <tr><td class="paramname">OutputIterator_</td><td>Forward iterator or pointer for the outputs. </td></tr>
-    <tr><td class="paramname">Engine</td><td>A random number generator class with <code>operator()</code>, <code>min()</code> (static) and <code>max()</code> (static) methods, where the <code>result_type</code> is an unsigned integer value.</td></tr>
+    <tr><td class="paramname">Engine_</td><td>A random number generator class with <code>operator()</code>, <code>min()</code> (static) and <code>max()</code> (static) methods, where the <code>result_type</code> is an unsigned integer value.</td></tr>
   </table>
   </dd>
 </dl>
@@ -267,13 +267,13 @@ template&lt;class InputIterator_ , typename Length_ , class OutputIterator_ , cl
 
 </div>
 </div>
-<a id="ae5ed7407c9fb663af00728c3c8cc3dac" name="ae5ed7407c9fb663af00728c3c8cc3dac"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae5ed7407c9fb663af00728c3c8cc3dac">&#9670;&#160;</a></span>shuffle()</h2>
+<a id="a2290a64214ae74d1f6b6b40ca6c22387" name="a2290a64214ae74d1f6b6b40ca6c22387"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2290a64214ae74d1f6b6b40ca6c22387">&#9670;&#160;</a></span>shuffle()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class InputIterator_ , typename Length_ , class Engine &gt; </div>
+template&lt;class InputIterator_ , typename Length_ , class Engine_ &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">void aarand::shuffle </td>
@@ -288,7 +288,7 @@ template&lt;class InputIterator_ , typename Length_ , class Engine &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Engine &amp;</td>          <td class="paramname"><span class="paramname"><em>eng</em></span>&#160;)</td>
+          <td class="paramtype">Engine_ &amp;</td>          <td class="paramname"><span class="paramname"><em>eng</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -311,18 +311,18 @@ template&lt;class InputIterator_ , typename Length_ , class Engine &gt; </div>
 
 </div>
 </div>
-<a id="a3cf87e0bca25edd84c43d53ed2b01363" name="a3cf87e0bca25edd84c43d53ed2b01363"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3cf87e0bca25edd84c43d53ed2b01363">&#9670;&#160;</a></span>standard_exponential()</h2>
+<a id="ab4684e9505d8302a4cb07e5247f97898" name="ab4684e9505d8302a4cb07e5247f97898"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab4684e9505d8302a4cb07e5247f97898">&#9670;&#160;</a></span>standard_exponential()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Output_  = double, class Engine &gt; </div>
+template&lt;typename Output_  = double, class Engine_ &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">Output_ aarand::standard_exponential </td>
           <td>(</td>
-          <td class="paramtype">Engine &amp;</td>          <td class="paramname"><span class="paramname"><em>eng</em></span></td><td>)</td>
+          <td class="paramtype">Engine_ &amp;</td>          <td class="paramname"><span class="paramname"><em>eng</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
