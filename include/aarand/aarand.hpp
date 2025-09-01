@@ -28,6 +28,7 @@ namespace aarand {
  * @param eng Instance of an RNG class like `std::mt19937_64`.
  *
  * @return Draw from a standard uniform distribution.
+ * All values are guaranteed to lie in `[0, 1)`.
  */
 template<typename Output_ = double, class Engine_>
 Output_ standard_uniform(Engine_& eng) {
@@ -55,6 +56,26 @@ Output_ standard_uniform(Engine_& eng) {
 }
 
 /**
+ * @cond
+ */
+// Some of the functions below log-transform a uniform random variable.
+// However, standard_uniform() has a small chance of returning zero, resulting in an undesirable -Inf after log.
+// To avoid this, any time we sample zero, we roll again.
+// Note to self: don't try to do something like replacing zeros with 1 to get the log-transform to work,
+// as this introduces inflated occurrences of log(1); better to just reroll to get a true sampling from (0, 1).
+template<typename Output_, class Engine_>
+Output_ non_zero_uniform(Engine_& eng) {
+    Output_ val;
+    do {
+        val = standard_uniform<Output_>(eng);
+    } while (val == 0);
+    return val;
+}
+/**
+ * @endcond
+ */
+
+/**
  * @tparam Output_ Floating point type of the output.
  * This is also used for intermediate calculations, so it is usually safest to provide a type that is at least as precise as a `double`. 
  * @tparam Engine_ A random number generator class with `operator()`, `min()` (static) and `max()` (static) methods,
@@ -70,7 +91,7 @@ std::pair<Output_, Output_> standard_normal(Engine_& eng) {
     constexpr Output_ TWO = 2;
 
     // Box-Muller gives us two random values at a time.
-    const Output_ constant = std::sqrt(-TWO * std::log(standard_uniform<Output_>(eng)));
+    const Output_ constant = std::sqrt(-TWO * std::log(non_zero_uniform<Output_>(eng)));
     const Output_ angle = TWO * PI * standard_uniform<Output_>(eng);
     return std::make_pair(constant * std::sin(angle), constant * std::cos(angle));
 }
@@ -84,14 +105,11 @@ std::pair<Output_, Output_> standard_normal(Engine_& eng) {
  * @param eng Instance of an RNG class like `std::mt19937_64`.
  *
  * @return Draw from a standard exponential distribution.
+ * Values are guaranteed to be non-negative.
  */
 template<typename Output_ = double, class Engine_>
 Output_ standard_exponential(Engine_& eng) {
-    Output_ val;
-    do {
-        val = standard_uniform<Output_>(eng);
-    } while (val == 0);
-    return -std::log(val);
+    return -std::log(non_zero_uniform<Output_>(eng));
 }
 
 /**
