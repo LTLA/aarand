@@ -8,19 +8,33 @@ class SampleTest : public ::testing::TestWithParam<int> {};
 TEST_P(SampleTest, WithInputs) {
     size_t n = 9;
     std::vector<int> counter(n);
+    std::vector<unsigned char> local_count(n);
 
     size_t s = GetParam();
     std::mt19937_64 rng(s); // different seed for a bit of variety.
 
     std::vector<int> input(n);
+    std::iota(input.begin(), input.end(), 0);
+    const auto& cinput = input;
+    std::vector<int> output(s);
+
     size_t niters = 100000;
     for (size_t i = 0; i < niters; ++i) {
-        std::vector<int> output(s);
-        std::iota(input.begin(), input.end(), 0);
-        aarand::sample(input.begin(), input.size(), s, output.begin(), rng);
+        std::fill(output.begin(), output.end(), 0);
+        aarand::sample(cinput.begin(), input.size(), s, output.begin(), rng);
 
         for (size_t j = 0; j < s; ++j) {
+            EXPECT_LT(output[j], n);
+            if (j) {
+                EXPECT_LT(output[j-1], output[j]);
+            }
+            EXPECT_EQ(local_count[output[j]], 0); // check there aren't any duplicates.
+            local_count[output[j]] = 1;
             ++counter[output[j]];
+        }
+
+        for (size_t j = 0; j < s; ++j) {
+            local_count[output[j]] = 0;
         }
     }
 
@@ -35,6 +49,7 @@ TEST_P(SampleTest, WithBound) {
     size_t n = 9;
     size_t s = GetParam();
     std::vector<int> counter(n);
+    std::vector<unsigned char> local_count(n);
 
     std::mt19937_64 rng(s); // different seed for a bit of variety.
 
@@ -44,7 +59,17 @@ TEST_P(SampleTest, WithBound) {
         aarand::sample(n, s, output.begin(), rng);
 
         for (size_t j = 0; j < s; ++j) {
+            EXPECT_LT(output[j], n);
+            if (j) {
+                EXPECT_LT(output[j-1], output[j]);
+            }
+            EXPECT_EQ(local_count[output[j]], 0); // check there aren't any duplicates.
+            local_count[output[j]] = 1;
             ++counter[output[j]];
+        }
+
+        for (size_t j = 0; j < s; ++j) {
+            local_count[output[j]] = 0;
         }
     }
 
