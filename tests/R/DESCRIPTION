@@ -1,0 +1,8 @@
+Package: aarand
+Title: Aaron's random distribution functions
+Version: 0.1.0
+Date: 2025-09-01
+Description: Bindings to the aarand C++ library for interactive testing in an R session.
+Authors@R: person("Aaron", "Lun", role=c("cre", "aut"), email="infinite.monkeys.with.keyboards@gmail.com")
+LinkingTo: Rcpp
+Imports: Rcpp

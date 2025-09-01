@@ -1,0 +1,8 @@
+useDynLib(aarand)
+export(aa_sample)
+export(aa_sample_n)
+export(aa_shuffle)
+export(aa_rnorm)
+export(aa_runif)
+export(aa_rexp)
+importFrom(Rcpp, sourceCpp)
